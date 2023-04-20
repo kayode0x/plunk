@@ -28,3 +28,16 @@ func decodeStringToMap(str *string) (map[string]interface{}, error) {
 
 	return result, nil
 }
+
+func convertMapToJSONString(m map[string]interface{}) (string, error) {
+	if m == nil {
+		return "", nil
+	}
+
+	b, err := json.Marshal(m)
+	if err != nil {
+		return "", err
+	}
+
+	return string(b), nil
+}

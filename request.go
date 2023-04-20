@@ -3,7 +3,6 @@ package plunk
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 )
@@ -45,8 +44,7 @@ func (p *Plunk) sendRequest(config SendConfig) (*http.Response, error) {
 
 	data := bytes.NewBuffer(body)
 
-	switch config.Method {
-	case http.MethodGet:
+	if config.Method == http.MethodGet {
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			p.logError(fmt.Sprintf("error creating request: %s", err.Error()))
@@ -62,9 +60,8 @@ func (p *Plunk) sendRequest(config SendConfig) (*http.Response, error) {
 			p.logError(fmt.Sprintf("error sending request: %s", err.Error()))
 			return nil, err
 		}
-		break
-	case http.MethodPost:
-		req, err := http.NewRequest("POST", url, data)
+	} else {
+		req, err := http.NewRequest(config.Method, url, data)
 		if err != nil {
 			p.logError(fmt.Sprintf("error creating request: %s", err.Error()))
 			return nil, err
@@ -79,9 +76,11 @@ func (p *Plunk) sendRequest(config SendConfig) (*http.Response, error) {
 			p.logError(fmt.Sprintf("error sending request: %s", err.Error()))
 			return nil, err
 		}
-		break
-	default:
-		return nil, errors.New("invalid method")
+	}
+
+	err = parseAPIError(resp)
+	if err != nil {
+		return nil, err
 	}
 
 	err = checkStatusCode(resp)
@@ -90,7 +89,7 @@ func (p *Plunk) sendRequest(config SendConfig) (*http.Response, error) {
 		return nil, err
 	}
 
-	p.logInfo(fmt.Sprintf("Made %s request to %s, status code: %d", "POST", url, resp.StatusCode))
+	p.logInfo(fmt.Sprintf("made %s request to %s, status code: %d", config.Method, url, resp.StatusCode))
 
 	return resp, nil
 }
@@ -99,5 +98,5 @@ func checkStatusCode(resp *http.Response) error {
 	if resp.StatusCode >= 200 && resp.StatusCode <= 299 {
 		return nil
 	}
-	return fmt.Errorf("Invalid response (%d %s)", resp.StatusCode, resp.Status)
+	return fmt.Errorf("invalid response (%d %s)", resp.StatusCode, resp.Status)
 }

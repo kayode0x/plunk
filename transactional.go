@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 type TransactionalEmailPayload struct {
@@ -50,39 +51,59 @@ func (p *Plunk) SendMultipleTransactionalEmails(payload []*TransactionalEmailPay
 }
 
 func (p *Plunk) sendTransactionalEmails(payload []*TransactionalEmailPayload) ([]*TransactionalEmailResponse, error) {
+	sem := make(chan bool, 10)
+	var wg sync.WaitGroup
+
 	// validate payload
-	for _, msg := range payload {
-		if msg.To == "" {
+	for _, pl := range payload {
+		if pl.To == "" {
 			return nil, ErrMissingTo
 		}
 
-		if msg.Subject == "" {
+		if pl.Subject == "" {
 			return nil, ErrMissingSubject
 		}
 
-		if msg.Body == "" {
+		if pl.Body == "" {
 			return nil, ErrMissingBody
 		}
 	}
 
 	result := []*TransactionalEmailResponse{}
 	url := p.url(transactionalEmailEndpoint)
-	resp, err := p.sendRequest(SendConfig{
-		Url:    url,
-		Body:   payload,
-		Method: http.MethodPost,
-	})
+	for _, pl := range payload {
+		wg.Add(1)
+		sem <- true
 
-	if err != nil {
-		return nil, err
+		go func(pl *TransactionalEmailPayload) {
+			defer wg.Done()
+			defer func() { <-sem }()
+
+			res := &TransactionalEmailResponse{}
+			resp, err := p.sendRequest(SendConfig{
+				Body:   pl,
+				Url:    url,
+				Method: http.MethodPost,
+			})
+
+			if err != nil {
+				return
+			}
+
+			defer resp.Body.Close()
+
+			err = decodeResponse(resp, &res)
+			if err != nil {
+				return
+			}
+
+			result = append(result, res)
+		}(pl)
 	}
 
-	defer resp.Body.Close()
+	wg.Wait()
 
-	err = decodeResponse(resp, &result)
-	if err != nil {
-		return nil, err
-	}
+	close(sem)
 
 	p.logInfo(fmt.Sprintf("Fetched %d transactional emails", len(result)))
 
