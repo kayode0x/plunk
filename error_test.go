@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseAPIError(t *testing.T) {
@@ -62,34 +64,25 @@ func TestParseAPIError(t *testing.T) {
 		defer ts.Close()
 
 		resp, err := http.Get(ts.URL)
-		if err != nil {
-			t.Errorf("Test case %d: unexpected error during request: %v", i, err)
-			continue
-		}
+		assert.Nil(t, err)
 		defer resp.Body.Close()
 
 		err = parseAPIError(resp)
 
 		if tc.expectFail {
-			if err == nil {
-				t.Errorf("Test case %d: expected error, got nil", i)
-			}
+			assert.NotNil(t, err)
 		} else {
 			if tc.expected == nil {
-				if err != nil {
-					t.Errorf("Test case %d: expected no error, got %v", i, err)
-				}
+				assert.Nil(t, err)
 			} else {
 				customErr, ok := err.(*CustomError)
-				if !ok {
-					t.Errorf("Test case %d: expected CustomError, got %T", i, err)
-					continue
-				}
+				assert.True(t, ok)
+
 				if customErr.Code != tc.expected.Code ||
 					customErr.Type != tc.expected.Type ||
 					customErr.Message != tc.expected.Message ||
 					customErr.Time != tc.expected.Time {
-					t.Errorf("Test case %d: expected %v, got %v", i, tc.expected, customErr)
+					assert.Fail(t, "Test case %d failed", i)
 				}
 			}
 		}

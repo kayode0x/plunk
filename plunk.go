@@ -14,6 +14,7 @@ var (
 const (
 	transactionalEmailEndpoint  = "/send"
 	eventsEndpoint              = "/track"
+	deleteEventEndpoint         = "/events"
 	contactsEndpoint            = "/contacts"
 	contactsCountEndpoint       = "/contacts/count"
 	contactsSubscribeEndpoint   = "/contacts/subscribe"

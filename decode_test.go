@@ -3,8 +3,9 @@ package plunk
 import (
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type TestStruct struct {
@@ -23,7 +24,7 @@ func TestDecodeResponse(t *testing.T) {
 		},
 	}
 
-	for i, tc := range testCases {
+	for _, tc := range testCases {
 		// Create a test server that returns the mocked response
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
@@ -34,23 +35,15 @@ func TestDecodeResponse(t *testing.T) {
 
 		// Send a request to the test server
 		resp, err := http.Get(ts.URL)
-		if err != nil {
-			t.Errorf("Test case %d: unexpected error during request: %v", i, err)
-			continue
-		}
+		assert.Nil(t, err)
 		defer resp.Body.Close()
 
 		// Call decodeResponse with the test server's response
 		var result TestStruct
 		err = decodeResponse(resp, &result)
-		if err != nil {
-			t.Errorf("Test case %d: unexpected error during decode: %v", i, err)
-		}
-
-		// Compare the decoded result with the expected value
-		if result != tc.expected {
-			t.Errorf("Test case %d: expected %v, got %v", i, tc.expected, result)
-		}
+		assert.Nil(t, err)
+		assert.NotNil(t, result)
+		assert.Equal(t, tc.expected, result)
 	}
 }
 
@@ -79,15 +72,10 @@ func TestDecodeStringToMap(t *testing.T) {
 		},
 	}
 
-	for i, tc := range testCases {
+	for _, tc := range testCases {
 		result, err := decodeStringToMap(tc.input)
-		if err != nil {
-			t.Errorf("Test case %d: unexpected error: %v", i, err)
-		}
-
-		if !reflect.DeepEqual(result, tc.expected) {
-			t.Errorf("Test case %d: expected %v, got %v", i, tc.expected, result)
-		}
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expected, result)
 	}
 }
 
@@ -112,12 +100,7 @@ func TestConvertMapToJSONString(t *testing.T) {
 
 	for i, tc := range testCases {
 		result, err := convertMapToJSONString(tc.input)
-		if err != nil {
-			t.Errorf("Test case %d: unexpected error: %v", i, err)
-		}
-
-		if result != tc.expected {
-			t.Errorf("Test case %d: expected %v, got %v", i, tc.expected, result)
-		}
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expected, result, "test case %d", i)
 	}
 }
