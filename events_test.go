@@ -15,7 +15,7 @@ var (
 )
 
 func TestTriggerEvent(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &EventPayload{
@@ -79,7 +79,7 @@ func TestTriggerEvent(t *testing.T) {
 }
 
 func TestDeleteEvent(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &EventPayload{

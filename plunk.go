@@ -41,8 +41,8 @@ type Plunk struct {
 	*Config
 }
 
-// NewClient returns a new Plunk client.
-func NewClient(apiKey string, opts ...func(*Config)) (*Plunk, error) {
+// New returns a new Plunk client.
+func New(apiKey string, opts ...func(*Config)) (*Plunk, error) {
 	if apiKey == "" {
 		return nil, ErrNoAPIKey
 	}
@@ -59,14 +59,14 @@ func NewClient(apiKey string, opts ...func(*Config)) (*Plunk, error) {
 	}, nil
 }
 
-// NewClientFromEnv returns a new Plunk client using the PLUNK_API_KEY environment variable.
-func NewClientFromEnv() (*Plunk, error) {
+// NewFromEnv returns a new Plunk client using the PLUNK_API_KEY environment variable.
+func NewFromEnv() (*Plunk, error) {
 	apiKey := os.Getenv("PLUNK_API_KEY")
 	if apiKey == "" {
 		return nil, ErrNoAPIKey
 	}
 
-	return NewClient(apiKey)
+	return New(apiKey)
 }
 
 // Append the endpoint to the base URL.

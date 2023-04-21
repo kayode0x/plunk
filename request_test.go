@@ -26,7 +26,7 @@ func TestDefaultReqConfig(t *testing.T) {
 
 func TestSendRequest(t *testing.T) {
 	// create a new Plunk object with a mocked http.Client
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	// create a SendConfig object with a GET method and a mocked response body

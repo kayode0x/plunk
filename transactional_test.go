@@ -8,11 +8,11 @@ import (
 )
 
 func TestSendTransactionalEmail(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &TransactionalEmailPayload{
-		To:      "khizzyjr@gmail.com",
+		To:      "test@example.com",
 		Subject: "Test Subject",
 		Body:    "Test Body",
 	}
@@ -24,12 +24,12 @@ func TestSendTransactionalEmail(t *testing.T) {
 }
 
 func TestSendMultipleTransactionalEmails(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := []*TransactionalEmailPayload{
 		{
-			To:      testEmail,
+			To:      "test@example.com",
 			Subject: "Test Subject",
 			Body:    "Test Body",
 		},
@@ -53,7 +53,7 @@ func TestSendMultipleTransactionalEmails(t *testing.T) {
 }
 
 func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	testCases := []struct {
@@ -70,7 +70,7 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 		},
 		{
 			payload: &TransactionalEmailPayload{
-				To:      testEmail,
+				To:      "test@example.com",
 				Subject: "",
 				Body:    "Test Body",
 			},
@@ -78,7 +78,7 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 		},
 		{
 			payload: &TransactionalEmailPayload{
-				To:      testEmail,
+				To:      "test@example.com",
 				Subject: "Test Subject",
 				Body:    "",
 			},

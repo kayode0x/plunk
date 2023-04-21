@@ -29,7 +29,7 @@ var (
 )
 
 func TestGetContact(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &CreateContactPayload{
@@ -49,7 +49,7 @@ func TestGetContact(t *testing.T) {
 }
 
 func TestGetContacts(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	contacts, err := p.GetContacts()
@@ -58,7 +58,7 @@ func TestGetContacts(t *testing.T) {
 }
 
 func TestGetContactsCount(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	count, err := p.GetContactsCount()
@@ -67,7 +67,7 @@ func TestGetContactsCount(t *testing.T) {
 }
 
 func TestCreateContact(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	data := map[string]interface{}{
@@ -97,7 +97,7 @@ func TestCreateContact(t *testing.T) {
 }
 
 func TestUpdateContact(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	data := map[string]interface{}{
@@ -146,7 +146,7 @@ func TestUpdateContact(t *testing.T) {
 }
 
 func TestDeleteContact(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &CreateContactPayload{
@@ -168,7 +168,7 @@ func TestDeleteContact(t *testing.T) {
 }
 
 func TestSubOrUnsubscribeContact(t *testing.T) {
-	p, err := NewClient(secretKey, opts)
+	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
 	payload := &CreateContactPayload{
