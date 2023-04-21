@@ -14,8 +14,7 @@ type TransactionalEmailPayload struct {
 }
 
 type TransactionalEmailResponse struct {
-	Success bool   `json:"success"`
-	Contact string `json:"contact"`
+	Success bool `json:"success"`
 }
 
 var (
@@ -105,7 +104,7 @@ func (p *Plunk) sendTransactionalEmails(payload []*TransactionalEmailPayload) ([
 
 	close(sem)
 
-	p.logInfo(fmt.Sprintf("Fetched %d transactional emails", len(result)))
+	p.logInfo(fmt.Sprintf("Sent %d transactional emails", len(result)))
 
 	return result, nil
 }
