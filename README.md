@@ -1,12 +1,11 @@
 # Plunk with Go
 
 [![GoDoc](https://godoc.org/github.com/kayode0x/plunk?status.svg)](https://godoc.org/github.com/kayode0x/plunk)
-    
 [![Go Report Card](https://goreportcard.com/badge/github.com/kayode0x/plunk)](https://goreportcard.com/report/github.com/kayode0x/plunk)
-    
 [![Coverage Status](https://coveralls.io/repos/github/kayode0x/plunk/badge.svg?branch=main)](https://coveralls.io/github/kayode0x/plunk?branch=main)
-    
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/kayode0x/plunk/main/LICENSE)
+
+Go library for interacting with the [Plunk](https://useplunk.com) [API](https://docs.useplunk.com).
 
 <!-- FEATURES -->
 ## Features
