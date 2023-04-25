@@ -18,7 +18,7 @@ func TestTriggerEvent(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &EventPayload{
+	payload := EventPayload{
 		Event: testEvent,
 		Email: eventTestEmail,
 	}
@@ -32,7 +32,7 @@ func TestTriggerEvent(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Test missing event
-	payload = &EventPayload{
+	payload = EventPayload{
 		Email: eventTestEmail,
 	}
 	resp, err = p.TriggerEvent(payload)
@@ -40,7 +40,7 @@ func TestTriggerEvent(t *testing.T) {
 	assert.Nil(t, resp)
 
 	// Test missing email
-	payload = &EventPayload{
+	payload = EventPayload{
 		Event: testEvent,
 	}
 	resp, err = p.TriggerEvent(payload)
@@ -54,7 +54,7 @@ func TestTriggerEvent(t *testing.T) {
 	defer server.Close()
 
 	p.BaseUrl = server.URL
-	payload = &EventPayload{
+	payload = EventPayload{
 		Event: testEvent,
 		Email: eventTestEmail,
 	}
@@ -69,7 +69,7 @@ func TestTriggerEvent(t *testing.T) {
 	defer server.Close()
 
 	p.BaseUrl = server.URL
-	payload = &EventPayload{
+	payload = EventPayload{
 		Event: testEvent,
 		Email: eventTestEmail,
 	}
@@ -82,7 +82,7 @@ func TestDeleteEvent(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &EventPayload{
+	payload := EventPayload{
 		Event: testEvent,
 		Email: eventTestEmail,
 	}

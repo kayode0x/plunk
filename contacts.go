@@ -164,7 +164,7 @@ func (p *Plunk) GetContactsCount() (int, error) {
 }
 
 // Used to create a new contact in your Plunk project without triggering an event
-func (p *Plunk) CreateContact(payload *CreateContactPayload) (*Contact, error) {
+func (p *Plunk) CreateContact(payload CreateContactPayload) (*Contact, error) {
 	result := &Contact{}
 	url := p.url(contactsEndpoint)
 

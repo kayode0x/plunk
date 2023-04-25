@@ -32,8 +32,8 @@ var (
 //
 // It is possible to use Markdown when sending a transactional email. Plunk will automatically apply the same styling as the email templates you make in the editor.
 // Any email with a body that starts with # will be treated as Markdown.
-func (p *Plunk) SendTransactionalEmail(payload *TransactionalEmailPayload) (*TransactionalEmailResponse, error) {
-	res, err := p.sendTransactionalEmails([]*TransactionalEmailPayload{payload})
+func (p *Plunk) SendTransactionalEmail(payload TransactionalEmailPayload) (*TransactionalEmailResponse, error) {
+	res, err := p.sendTransactionalEmails([]TransactionalEmailPayload{payload})
 	if err != nil {
 		return nil, err
 	}
@@ -45,11 +45,11 @@ func (p *Plunk) SendTransactionalEmail(payload *TransactionalEmailPayload) (*Tra
 	return res[0], nil
 }
 
-func (p *Plunk) SendMultipleTransactionalEmails(payload []*TransactionalEmailPayload) ([]*TransactionalEmailResponse, error) {
+func (p *Plunk) SendMultipleTransactionalEmails(payload []TransactionalEmailPayload) ([]*TransactionalEmailResponse, error) {
 	return p.sendTransactionalEmails(payload)
 }
 
-func (p *Plunk) sendTransactionalEmails(payload []*TransactionalEmailPayload) ([]*TransactionalEmailResponse, error) {
+func (p *Plunk) sendTransactionalEmails(payload []TransactionalEmailPayload) ([]*TransactionalEmailResponse, error) {
 	sem := make(chan bool, 10)
 	var wg sync.WaitGroup
 
@@ -74,7 +74,7 @@ func (p *Plunk) sendTransactionalEmails(payload []*TransactionalEmailPayload) ([
 		wg.Add(1)
 		sem <- true
 
-		go func(pl *TransactionalEmailPayload) {
+		go func(pl TransactionalEmailPayload) {
 			defer wg.Done()
 			defer func() { <-sem }()
 

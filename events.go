@@ -36,7 +36,7 @@ var (
 )
 
 // Triggers an event and creates it if it doesn't exist.
-func (p *Plunk) TriggerEvent(payload *EventPayload) (*EventResponse, error) {
+func (p *Plunk) TriggerEvent(payload EventPayload) (*EventResponse, error) {
 	// validate payload
 	if payload.Event == "" {
 		return nil, ErrMissingEvent

@@ -11,7 +11,7 @@ func TestSendTransactionalEmail(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &TransactionalEmailPayload{
+	payload := TransactionalEmailPayload{
 		To:      "test@example.com",
 		Subject: "Test Subject",
 		Body:    "Test Body",
@@ -27,7 +27,7 @@ func TestSendMultipleTransactionalEmails(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := []*TransactionalEmailPayload{
+	payload := []TransactionalEmailPayload{
 		{
 			To:      "test@example.com",
 			Subject: "Test Subject",
@@ -57,11 +57,11 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 	assert.Nil(t, err)
 
 	testCases := []struct {
-		payload *TransactionalEmailPayload
+		payload TransactionalEmailPayload
 		err     error
 	}{
 		{
-			payload: &TransactionalEmailPayload{
+			payload: TransactionalEmailPayload{
 				To:      "",
 				Subject: "Test Subject",
 				Body:    "Test Body",
@@ -69,7 +69,7 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 			err: ErrMissingTo,
 		},
 		{
-			payload: &TransactionalEmailPayload{
+			payload: TransactionalEmailPayload{
 				To:      "test@example.com",
 				Subject: "",
 				Body:    "Test Body",
@@ -77,7 +77,7 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 			err: ErrMissingSubject,
 		},
 		{
-			payload: &TransactionalEmailPayload{
+			payload: TransactionalEmailPayload{
 				To:      "test@example.com",
 				Subject: "Test Subject",
 				Body:    "",
@@ -87,7 +87,7 @@ func TestSendTransactionalEmailWithInvalidPayload(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		_, err := p.sendTransactionalEmails([]*TransactionalEmailPayload{tc.payload})
+		_, err := p.sendTransactionalEmails([]TransactionalEmailPayload{tc.payload})
 		assert.NotNil(t, err)
 		assert.Equal(t, err, tc.err)
 	}

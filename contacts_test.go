@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var opts = func(c *Config) {
-	c.Debug = true
+var opts = &Config{
+	Debug: true,
 }
 
 func getEnvVariable(key string) string {
@@ -32,7 +32,7 @@ func TestGetContact(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &CreateContactPayload{
+	payload := CreateContactPayload{
 		Email: testEmail,
 	}
 
@@ -75,7 +75,7 @@ func TestCreateContact(t *testing.T) {
 		"last_name":  "Doe",
 	}
 
-	payload := &CreateContactPayload{
+	payload := CreateContactPayload{
 		Data:       data,
 		Subscribed: true,
 		Email:      testEmail,
@@ -104,7 +104,7 @@ func TestUpdateContact(t *testing.T) {
 		"first_name": "John",
 		"last_name":  "Doe",
 	}
-	payload := &CreateContactPayload{
+	payload := CreateContactPayload{
 		Data:       data,
 		Subscribed: true,
 		Email:      testEmail,
@@ -149,7 +149,7 @@ func TestDeleteContact(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &CreateContactPayload{
+	payload := CreateContactPayload{
 		Email: testEmail,
 	}
 
@@ -171,7 +171,7 @@ func TestSubOrUnsubscribeContact(t *testing.T) {
 	p, err := New(secretKey, opts)
 	assert.Nil(t, err)
 
-	payload := &CreateContactPayload{
+	payload := CreateContactPayload{
 		Email: testEmail,
 	}
 
