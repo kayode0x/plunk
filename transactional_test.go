@@ -1,7 +1,6 @@
 package plunk
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -47,7 +46,6 @@ func TestSendMultipleTransactionalEmails(t *testing.T) {
 	assert.Equal(t, res[1].Success, true)
 
 	for _, r := range res {
-		fmt.Println("Response: ", r)
 		assert.Equal(t, r.Success, true)
 	}
 }
