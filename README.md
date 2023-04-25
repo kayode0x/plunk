@@ -41,10 +41,10 @@ import (
 
 func main() {
 	// create a new Plunk object with your API key
-	p, _ := plunk.New("YOUR_API_KEY")
+	p, _ := plunk.New("YOUR_API_KEY", nil)
 
     // optionally, you can set some configuration options.
-    config := plunk.Config{
+    config := &plunk.Config{
         BaseUrl: "https://api.useplunk.com",
         Debug: true,
         Client: &http.Client{
@@ -60,7 +60,7 @@ func main() {
     }
 
 	// create a new email payload
-	payload := &TransactionalEmailPayload{
+	payload := TransactionalEmailPayload{
 		To:      "test@example.com",
 		Subject: "Test Subject",
 		Body:    "Test Body",

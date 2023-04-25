@@ -28,7 +28,7 @@ type Config struct {
 	Debug   bool
 }
 
-func defaultConfig() *Config {
+func (p *Plunk) defaultConfig() *Config {
 	return &Config{
 		ApiKey:  "",
 		Client:  http.DefaultClient,
@@ -42,21 +42,32 @@ type Plunk struct {
 }
 
 // New returns a new Plunk client.
-func New(apiKey string, opts ...func(*Config)) (*Plunk, error) {
+func New(apiKey string, c *Config) (*Plunk, error) {
 	if apiKey == "" {
 		return nil, ErrNoAPIKey
 	}
 
-	config := defaultConfig()
-	config.ApiKey = apiKey
+	p := &Plunk{}
+	config := p.defaultConfig()
 
-	for _, opt := range opts {
-		opt(config)
+	if c != nil {
+		if c.Client != nil {
+			config.Client = c.Client
+		}
+
+		if c.BaseUrl != "" {
+			config.BaseUrl = c.BaseUrl
+		}
+
+		if c.Debug {
+			config.Debug = c.Debug
+		}
 	}
 
-	return &Plunk{
-		Config: config,
-	}, nil
+	config.ApiKey = apiKey
+	p.Config = config
+
+	return p, nil
 }
 
 // NewFromEnv returns a new Plunk client using the PLUNK_API_KEY environment variable.
@@ -66,7 +77,7 @@ func NewFromEnv() (*Plunk, error) {
 		return nil, ErrNoAPIKey
 	}
 
-	return New(apiKey)
+	return New(apiKey, nil)
 }
 
 // Append the endpoint to the base URL.
