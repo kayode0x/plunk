@@ -11,6 +11,8 @@ type TransactionalEmailPayload struct {
 	To      string `json:"to"`
 	Subject string `json:"subject"`
 	Body    string `json:"body"`
+	From    string `json:"from,omitempty"`
+	Name    string `json:"name,omitempty"`
 }
 
 type TransactionalEmailResponse struct {
