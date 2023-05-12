@@ -8,7 +8,8 @@ import (
 
 type EventPayload struct {
 	Event      string `json:"event"`
-	Email      string `json:"email"`
+	Email      string `json:"email"` // See: https://docs.useplunk.com/guides/linking-data-to-contacts#linking-data-on-event-triggers
+	Data       string `json:"data"`
 	Subscribed bool   `json:"subscribed"` // When you trigger an event for a contact, they will automatically be subscribed unless you pass subscribed: false along with the event.
 }
 
@@ -53,7 +54,6 @@ func (p *Plunk) TriggerEvent(payload EventPayload) (*EventResponse, error) {
 		Method: http.MethodPost,
 		Body:   payload,
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,6 @@ func (p *Plunk) DeleteEvent(id string) (*Event, error) {
 		Method: http.MethodDelete,
 		Body:   map[string]string{"id": id},
 	})
-
 	if err != nil {
 		return nil, err
 	}
