@@ -7,10 +7,10 @@ import (
 )
 
 type EventPayload struct {
-	Event      string `json:"event"`
-	Email      string `json:"email"` // See: https://docs.useplunk.com/guides/linking-data-to-contacts#linking-data-on-event-triggers
-	Data       string `json:"data"`
-	Subscribed bool   `json:"subscribed"` // When you trigger an event for a contact, they will automatically be subscribed unless you pass subscribed: false along with the event.
+	Event      string         `json:"event"`
+	Email      string         `json:"email"`
+	Data       map[string]any `json:"data"`       // See: https://docs.useplunk.com/guides/linking-data-to-contacts#linking-data-on-event-triggers
+	Subscribed bool           `json:"subscribed"` // When you trigger an event for a contact, they will automatically be subscribed unless you pass subscribed: false along with the event.
 }
 
 type EventResponse struct {
