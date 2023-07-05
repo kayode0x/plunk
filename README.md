@@ -7,6 +7,13 @@
 
 Go library for interacting with the [Plunk](https://useplunk.com) [API](https://docs.useplunk.com).
 
+<!-- Header image -->
+<p align="center">
+  <a href="https://useplunk.com">
+    <img src="github_card_go.png" alt="Logo" width="1280" height="640">
+  </a>
+</p>
+
 <!-- FEATURES -->
 ## Features
 The Plunk Go SDK includes the following features:
