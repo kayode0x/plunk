@@ -28,6 +28,7 @@ type EmailRecipient struct {
 type TransactionalEmailResponse struct {
 	Success bool             `json:"success"`
 	Emails  []EmailRecipient `json:"emails"`
+	Timestamp string         `json:"timestamp"`
 }
 
 var (
