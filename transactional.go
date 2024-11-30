@@ -15,8 +15,20 @@ type TransactionalEmailPayload struct {
 	Name    string `json:"name,omitempty"`
 }
 
+type ContactInfo struct {
+	ID    string `json:"id"`
+	Email string `json:"email"`
+}
+
+type EmailRecipient struct {
+	Contact ContactInfo `json:"contact"`
+	Email   string      `json:"email"`
+}
+
 type TransactionalEmailResponse struct {
-	Success bool `json:"success"`
+	Success bool             `json:"success"`
+	Emails  []EmailRecipient `json:"emails"`
+	Timestamp string         `json:"timestamp"`
 }
 
 var (
